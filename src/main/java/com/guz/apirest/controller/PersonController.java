@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.guz.apirest.model.entity.Person;
 import com.guz.apirest.service.PersonService;
+import com.guz.apirest.service.dto.PersonDTO;
 
 @RestController
 @RequestMapping("/person")
@@ -32,6 +33,12 @@ public class PersonController {
 	public ResponseEntity<Person> getPerson(@RequestParam("id") Integer id) {
 		Optional<Person> person = personService.searchPerson(id);
 		return ResponseEntity.ok().body(person.isPresent() ? person.get() : new Person());
+	}
+	
+	@GetMapping("getWithNameEmail")
+	public ResponseEntity<List<PersonDTO>> getPersonByNameAndEmail(@RequestParam("name") String name, @RequestParam("email") String email) {
+		List<PersonDTO> persons = personService.searchPersonByNameEmail(name, email);
+		return ResponseEntity.ok().body(persons);
 	}
 
 	@PostMapping("/create")
